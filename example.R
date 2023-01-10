@@ -1,0 +1,10 @@
+source("R/snake_player.R")
+
+set.seed(1)
+space <- Space$new(50,90)
+space$fill_space()
+get_space_stats(space)
+p <- space$show()
+p + scale_color_viridis_c(direction = 1, begin = 0.1, end = .9, option = "F")
+p + scale_color_viridis_c(direction = 1, begin = 0, end = 1, option = "D")
+# scale_color_manual(values = rep(c("white","red"),600))

@@ -144,7 +144,7 @@ plot_space <- function(space,
     geom_path(show.legend = F, linewidth=linewidth) +
     geom_path(show.legend = F, linewidth=linewidth-1, col=background_color) +
     theme_void() +
-    coord_fixed(xlim = c(1,space$ncols), ylim = c(1,space$nrows)) +
+    coord_cartesian(xlim = c(1,space$ncols), ylim = c(1,space$nrows)) +
     theme(panel.background = element_rect(fill = background_color)) +
     geom_polygon(data=dplyr::tibble(row = c(0,0,space$nrows+1,space$nrows+1),
                           col = c(0,space$ncols+1,space$ncols+1,0),

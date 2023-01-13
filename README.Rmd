@@ -9,7 +9,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   warning = FALSE, 
-  message = FALSE
+  message = FALSE,
+  out.width="100%"
 )
 ```
 
@@ -26,28 +27,28 @@ source("R/snake_player.R")
 Make a space
 
 ```{r}
-space <- Space$new(nrows = 30, ncol=50)
+space <- Space$new(nrows = 40, ncol=70)
 ```
 
 Start a Snake!
 
 ```{r}
 space$new_snake()
-space$show() +snake_palette("E")
+space$show(linewidth=1) + snake_palette("E")
 ```
 
 extend the head in a random direction, as long as the space is available
 
 ```{r}
 space$move_head()
-space$show()
+space$show(linewidth=1) + snake_palette("E")
 ```
 
 Grow the snake until it's trapped
 
 ```{r}
 space$grow_snake()
-space$show()
+space$show(linewidth=1) + snake_palette("E")
 ```
 
 Make another one... and one more
@@ -55,14 +56,27 @@ The longer the snake, the brighest it gets
 ```{r}
 space$new_snake()
 space$grow_snake()
-space$show()
+space$show(linewidth=1) + snake_palette("E")
 ```
 
 Fill up the whole space
 
 ```{r}
 space$fill_space()
-space$show() + snake_palette("E")
+space$show(linewidth=1) + snake_palette("E")
 ```
 
 So pretty!
+
+```{r}
+space$fill_space()
+space$show(linewidth=3) + snake_palette("E")
+```
+
+
+```{r}
+space <- Space$new(50,90)
+space$fill_space()
+space$show(linewidth=1,
+           dotsize=2) + snake_palette("B")
+```

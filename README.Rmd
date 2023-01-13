@@ -33,21 +33,21 @@ Start a Snake!
 
 ```{r}
 space$new_snake()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 extend the head in a random direction, as long as the space is available
 
 ```{r}
 space$move_head()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 Grow the snake until it's trapped
 
 ```{r}
 space$grow_snake()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 Make another one... and one more
@@ -55,21 +55,21 @@ The longer the snake, the brighest it gets
 ```{r}
 space$new_snake()
 space$grow_snake()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 Fill up the whole space
 
 ```{r}
 space$fill_space()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 So pretty!
 
 ```{r}
 space$fill_space()
-space$show(linewidth=3) + snake_palette("E")
+space$show(linewidth=3) + snake_palette("D")
 ```
 
 

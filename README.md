@@ -16,7 +16,7 @@ Start a Snake!
 
 ``` r
 space$new_snake()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
@@ -25,7 +25,7 @@ extend the head in a random direction, as long as the space is available
 
 ``` r
 space$move_head()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
@@ -34,7 +34,7 @@ Grow the snake until it’s trapped
 
 ``` r
 space$grow_snake()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
@@ -45,7 +45,7 @@ gets
 ``` r
 space$new_snake()
 space$grow_snake()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
@@ -54,7 +54,7 @@ Fill up the whole space
 
 ``` r
 space$fill_space()
-space$show(linewidth=1) + snake_palette("E")
+space$show(linewidth=1) + snake_palette("D")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
@@ -63,7 +63,7 @@ So pretty!
 
 ``` r
 space$fill_space()
-space$show(linewidth=3) + snake_palette("E")
+space$show(linewidth=3) + snake_palette("D")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->

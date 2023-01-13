@@ -8,6 +8,7 @@ Space <- R6::R6Class(classname = "Space",
                        occupied=c(),
                        occupied_values=c(),
                        posmap=NA,
+                       valuemap=NA,
                        head=NA,
                        tail=NA,
                        snake_value=0,
@@ -19,6 +20,7 @@ Space <- R6::R6Class(classname = "Space",
                          self$size <- size
                          self$freespace <- size
                          self$posmap <- matrix(1:size, nrow = nrows)
+                         self$valuemap <- matrix(NA, nrow = nrows, ncol = ncols)
                        },
 
                        occupy = function(pos,value) {
@@ -65,11 +67,25 @@ Space <- R6::R6Class(classname = "Space",
                          self$head <- newhead
                          invisible(self)
                        },
+                       
+                       move_tail = function() {
+                         newtail <- self$pick_adj_pos(self$tail)
+                         self$occupy(newtail, self$snake_value)
+                         self$tail <- newtail
+                         invisible(self)
+                       },
 
                        grow_snake = function() {
-                         while(any(space$get_adj_pos(space$head)!=0)) {
+                         while(any(self$get_adj_pos(self$head)!=0)) {
                            self$move_head()
                          }
+                         
+                         # skip the tail extension
+                         # this way the order of the path (from tail to head) in occupied_values is preserved
+                         
+                         # while(any(self$get_adj_pos(self$tail)!=0)) {
+                         #   self$move_tail()
+                         # }
                          invisible(self)
                        },
 
@@ -81,8 +97,8 @@ Space <- R6::R6Class(classname = "Space",
                          invisible(self)
                        },
 
-                       show = function() {
-                         plot_space(self)
+                       show = function(...) {
+                         plot_space(self,...)
                        }
                      ))
 
@@ -104,44 +120,48 @@ get_adj_pos <- function(pos, space) {
   res
 }
 
-plot_space <- function(space) {
+plot_space <- function(space,
+                       linewidth=3, 
+                       background_color="black", 
+                       border_color="white",
+                       dotsize=3) {
 
-  df <- map(space$occupied, function(pos) {
+  df <- purrr::map(space$occupied, function(pos) {
     which(space$posmap==pos,arr.ind = TRUE)
   }) %>% purrr::reduce(rbind) %>%
-    as_tibble() %>%
-    mutate(value = space$occupied_values) %>%
-    group_by(value) %>%
-    mutate(length=n())
+    dplyr::as_tibble() %>%
+    dplyr::mutate(value = space$occupied_values) %>%
+    dplyr::group_by(value) %>%
+    dplyr::mutate(length=n())
 
   head_and_tails <- df %>%
-    group_by(value) %>%
-    slice(c(1,n()))
+    dplyr::group_by(value) %>%
+    dplyr::slice(c(1,n()))
 
   p <- ggplot(df, aes(x=col, y=row, group=value, col=(length))) +
     # ggplot(df, aes(x=col, y=row, col=as.factor(value))) +
-    geom_point(data=head_and_tails,show.legend = F, size=3) +
-    geom_path(show.legend = F, linewidth=3) +
-    geom_path(show.legend = F, linewidth=2, col="black") +
+    geom_point(data=head_and_tails,show.legend = F, size=dotsize) +
+    geom_path(show.legend = F, linewidth=linewidth) +
+    geom_path(show.legend = F, linewidth=linewidth-1, col=background_color) +
     theme_void() +
     coord_fixed(xlim = c(1,space$ncols), ylim = c(1,space$nrows)) +
-    theme(panel.background = element_rect(fill = "black")) +
-    geom_polygon(data=tibble(row = c(0,0,space$nrows+1,space$nrows+1),
+    theme(panel.background = element_rect(fill = background_color)) +
+    geom_polygon(data=dplyr::tibble(row = c(0,0,space$nrows+1,space$nrows+1),
                           col = c(0,space$ncols+1,space$ncols+1,0),
-                          value=0), col="white", linewidth=3, fill="transparent")
+                          value=0), col=border_color, linewidth=linewidth, fill="transparent")
 
   p
 }
 
 get_space_stats <- function(space) {
-  df <- map(space$occupied, function(pos) {
+  df <- purrr::map(space$occupied, function(pos) {
     which(space$posmap==pos,arr.ind = TRUE)
   }) %>% purrr::reduce(rbind) %>%
-    as_tibble() %>%
-    mutate(value = space$occupied_values) %>%
-    group_by(value) %>%
-    mutate(length=n()) %>%
-    ungroup()
+    dplyr::as_tibble() %>%
+    dplyr::mutate(value = space$occupied_values) %>%
+    dplyr::group_by(value) %>%
+    dplyr::mutate(length=n()) %>%
+    dplyr::ungroup()
 
   snakes <- df %>%
     count(value,name = "length")
@@ -152,4 +172,8 @@ get_space_stats <- function(space) {
     summarise(snakes = n(),
               longest = max(length),
               points=length_count[1])
+}
+
+snake_palette <- function(option) {
+  scale_color_viridis_c(direction = 1, begin = 0.1, end = .9, option = option)
 }
